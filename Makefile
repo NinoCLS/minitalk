@@ -1,18 +1,18 @@
 
 NAMEC = client
 NAMES = server
-# BONUS_NAMEC = client_bonus
-# BONUS_NAMES = server_bonus
+BONUS_NAMEC = client_bonus
+BONUS_NAMES = server_bonus
 PRINTF = libftprintf.a
 SRCC_FILES =	client.c
 SRCS_FILES =	server.c
-# BONUSC_FILES = client_bonus.c 
-# BONUSS_FILES = server_bonus.c
+BONUSC_FILES = client_bonus.c 
+BONUSS_FILES = server_bonus.c
 SRC_DIR = src/
 SRCC = $(addprefix $(SRC_DIR), $(SRCC_FILES))
 SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
-# BONUSC = $(addprefix $(SRC_DIR), $(BONUSC_FILES))
-# BONUSS = $(addprefix $(SRC_DIR), $(BONUSS_FILES))
+BONUSC = $(addprefix $(SRC_DIR), $(BONUSC_FILES))
+BONUSS = $(addprefix $(SRC_DIR), $(BONUSS_FILES))
 OBJC = ${SRCC:.c=.o}
 OBJS = ${SRCS:.c=.o}
 OBJBC = ${BONUSC:.c=.o}
@@ -32,15 +32,15 @@ $(NAMES) : $(OBJS)
 		@make -C ft_printf
 		$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) ft_printf/$(PRINTF) -o $(NAMES)
 
-# bonus : $(BONUS_NAMEC) $(BONUS_NAMES)
+bonus : $(BONUS_NAMEC) $(BONUS_NAMES)
 
-# $(BONUS_NAMEC) : $(OBJBC)
-# 				@make -C printf
-# 				$(CC) $(CFLAGS) $(OBJBC)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMEC)
+$(BONUS_NAMEC) : $(OBJBC)
+				@make -C printf
+				$(CC) $(CFLAGS) $(OBJBC)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMEC)
 
-# $(BONUS_NAMES) : $(OBJBS)
-# 				@make -C printf
-# 				$(CC) $(CFLAGS) $(OBJBS)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMES)
+$(BONUS_NAMES) : $(OBJBS)
+				@make -C printf
+				$(CC) $(CFLAGS) $(OBJBS)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMES)
 
 clean :
 		@make clean -C ft_printf

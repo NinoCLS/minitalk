@@ -1,16 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/08 13:04:20 by nino              #+#    #+#             */
-/*   Updated: 2024/01/09 17:39:16 by nclassea         ###   ########.fr       */
+/*   Created: 2024/01/09 17:39:10 by nclassea          #+#    #+#             */
+/*   Updated: 2024/01/09 17:45:20 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minitalk.h"
+
+void	confirm_msg(int signal)
+{
+	if (signal == SIGUSR2)
+		ft_printf("Message received !\n");
+}
 
 void	ft_ascii_to_bit(int pid, char character)
 {
@@ -42,6 +48,7 @@ int	main(int ac, char **av)
 			ft_ascii_to_bit(pid, av[2][i]);
 			i++;
 		}
+		signal(SIGUSR2, confirm_msg);
 	}
 	else
 	{

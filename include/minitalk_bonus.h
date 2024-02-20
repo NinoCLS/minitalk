@@ -5,15 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 17:38:48 by nclassea          #+#    #+#             */
-/*   Updated: 2024/01/09 17:39:03 by nclassea         ###   ########.fr       */
+/*   Created: 2024/02/20 18:14:31 by nclassea          #+#    #+#             */
+/*   Updated: 2024/02/20 18:14:31 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_BONUS_H
 # define MINITALK_BONUS_H
 
-# include "../ft_printf/include/ft_printf.h"
+# include "../libft/libft.h"
 # include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 #endif

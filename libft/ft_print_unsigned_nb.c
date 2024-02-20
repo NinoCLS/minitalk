@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_print_unsigned_nb.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nino <nino@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:13:19 by nclassea          #+#    #+#             */
-/*   Updated: 2024/01/08 13:36:37 by nino             ###   ########.fr       */
+/*   Updated: 2024/01/24 14:00:46 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_printf.h"
+#include "libft.h"
 
 static unsigned int	ft_nb_size(unsigned int nb)
 {
@@ -19,6 +19,8 @@ static unsigned int	ft_nb_size(unsigned int nb)
 	len = 0;
 	if (nb == 0)
 		return (1);
+	if (nb < 0)
+		len += 1;
 	while (nb != 0)
 	{
 		nb /= 10;

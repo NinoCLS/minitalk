@@ -5,55 +5,88 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 17:39:10 by nclassea          #+#    #+#             */
-/*   Updated: 2024/01/09 17:45:20 by nclassea         ###   ########.fr       */
+/*   Created: 2024/01/08 13:04:20 by nino              #+#    #+#             */
+/*   Updated: 2024/02/20 18:41:15 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minitalk.h"
+#include "../include/minitalk_bonus.h"
 
-void	confirm_msg(int signal)
+static int	g_received;
+
+void	bit_handler(int sig, siginfo_t *info, void *context)
 {
-	if (signal == SIGUSR2)
-		ft_printf("Message received !\n");
+	static int	i;
+	char		*bytes;
+	int			pid;
+
+	(void)context;
+	(void)info;
+	(void)sig;
+	pid = info->si_pid;
+	g_received = 1;
+	if (sig == SIGUSR2)
+		i++;
+	else if (sig == SIGUSR1)
+	{
+		bytes = ft_itoa(i / 8);
+		ft_printf("Message received from the server : %d\n", pid);
+		ft_printf("Received %s bytes from the server\n", bytes);
+		free(bytes);
+		i = 1;
+	}
 }
 
-void	ft_ascii_to_bit(int pid, char character)
+// ascii to binary
+int	atob(int pid, char c)
 {
 	int	i;
+	int	byte_index;
 
-	i = 7;
-	while (i >= 0)
+	byte_index = 7;
+	while (byte_index >= 0)
 	{
-		if ((character >> i) & 1) //decale les bits de char de i vers la droite 
+		i = 0;
+		if ((c >> byte_index) & 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
-		usleep(500);
-		i--;
+		while (g_received == 0)
+		{
+			if (i == 50)
+				return (0);
+			i++;
+			usleep(100);
+		}
+		g_received = 0;
+		byte_index--;
 	}
+	return (0);
 }
 
 int	main(int ac, char **av)
 {
-	int	pid;
-	int	i;
+	struct sigaction	act;
+	int					pid;
+	int					byte_index;
 
-	i = 0;
-	if (ac == 3)
+	act.sa_flags = SA_SIGINFO;
+	act.sa_sigaction = bit_handler;
+	sigemptyset(&act.sa_mask);
+	if (ac != 3)
 	{
-		pid = ft_atoi(av[1]);
-		while (av[2][i] != '\0')
-		{
-			ft_ascii_to_bit(pid, av[2][i]);
-			i++;
-		}
-		signal(SIGUSR2, confirm_msg);
-	}
-	else
-	{
-		ft_printf("Wrong number of argument");
+		ft_printf("Error : wrong format\n");
 		return (0);
 	}
+	pid = ft_atoi(av[1]);
+	sigaction(SIGUSR1, &act, 0);
+	sigaction(SIGUSR2, &act, 0);
+	byte_index = 0;
+	while (av[2][byte_index])
+	{
+		atob(pid, av[2][byte_index]);
+		byte_index++;
+	}
+	atob(pid, 0);
 	return (0);
 }

@@ -1,62 +1,57 @@
+SRC_1 = src/client.c
+OBJ_1 = $(SRC_1:.c=.o)
 
-NAMEC = client
-NAMES = server
-BONUS_NAMEC = client_bonus
-BONUS_NAMES = server_bonus
-PRINTF = libftprintf.a
-SRCC_FILES =	client.c
-SRCS_FILES =	server.c
-BONUSC_FILES = client_bonus.c 
-BONUSS_FILES = server_bonus.c
-SRC_DIR = src/
-SRCC = $(addprefix $(SRC_DIR), $(SRCC_FILES))
-SRCS = $(addprefix $(SRC_DIR), $(SRCS_FILES))
-BONUSC = $(addprefix $(SRC_DIR), $(BONUSC_FILES))
-BONUSS = $(addprefix $(SRC_DIR), $(BONUSS_FILES))
-OBJC = ${SRCC:.c=.o}
-OBJS = ${SRCS:.c=.o}
-OBJBC = ${BONUSC:.c=.o}
-OBJBS = ${BONUSS:.c=.o}
-CC			= cc
-CFLAGS		= -Wall -Werror -Wextra
-INCLUDE = -I include
-RM = rm -rf
+SRC_2 = src/server.c
+OBJ_2 = $(SRC_2:.c=.o)
 
-all:	$(NAMEC) $(NAMES)
+SRC_3 = src/client_bonus.c
+OBJ_3 = $(SRC_3:.c=.o)
 
-$(NAMEC) : $(OBJC)
-		@make -C ft_printf
-		$(CC) $(CFLAGS) $(OBJC) $(INCLUDE) ft_printf/$(PRINTF) -o $(NAMEC)
+SRC_4 = src/server_bonus.c
+OBJ_4 = $(SRC_4:.c=.o)
 
-$(NAMES) : $(OBJS)
-		@make -C ft_printf
-		$(CC) $(CFLAGS) $(OBJS) $(INCLUDE) ft_printf/$(PRINTF) -o $(NAMES)
+CFLAGS = -Wall -Werror -Wextra
+LIBFT_PATH = libft
 
-bonus : $(BONUS_NAMEC) $(BONUS_NAMES)
+NAME_CLIENT = client
+NAME_SERVER = server
+NAME_CLIENT_BONUS = client_bonus
+NAME_SERVER_BONUS = server_bonus
 
-$(BONUS_NAMEC) : $(OBJBC)
-				@make -C printf
-				$(CC) $(CFLAGS) $(OBJBC)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMEC)
+$(NAME_CLIENT): $(NAME_SERVER) $(OBJ_1) libft 
+	$(MAKE) -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(OBJ_1) -L$(LIBFT_PATH) -lft -o $(NAME_CLIENT)
 
-$(BONUS_NAMES) : $(OBJBS)
-				@make -C printf
-				$(CC) $(CFLAGS) $(OBJBS)  $(INCLUDE)  printf/$(PRINTF) -o $(BONUS_NAMES)
+$(NAME_SERVER): $(OBJ_2) libft
+	$(MAKE) -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(OBJ_2) -L$(LIBFT_PATH) -lft -o $(NAME_SERVER)
 
-clean :
-		@make clean -C ft_printf
-		${RM} ${OBJC}
-		${RM} ${OBJS}
-		${RM} ${OBJBC}
-		${RM} ${OBJBS}
+$(NAME_CLIENT_BONUS): $(OBJ_3) libft 
+	$(MAKE) -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(OBJ_3) -L$(LIBFT_PATH) -lft -o $(NAME_CLIENT_BONUS)
 
-fclean : clean
-		@make fclean -C ft_printf
-		${RM} $(NAMEC)
-		${RM} $(NAMES)
-		${RM} $(BONUS_NAMEC)
-		${RM} $(BONUS_NAMES)
-		${RM} $(PRINTF)
+$(NAME_SERVER_BONUS): $(OBJ_4) libft
+	$(MAKE) -C $(LIBFT_PATH)
+	$(CC) $(CFLAGS) $(OBJ_4) -L$(LIBFT_PATH) -lft -o $(NAME_SERVER_BONUS)
 
-re : fclean all
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.PHONY:		all bonus clean fclean re
+libft:
+	$(MAKE) -C $(LIBFT_PATH)
+
+all: $(NAME_CLIENT) $(NAME_SERVER)
+
+bonus: $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
+
+clean:
+	rm -f $(OBJ_1) $(OBJ_2) $(OBJ_3) $(OBJ_4)
+	$(MAKE) -C $(LIBFT_PATH) clean
+
+fclean: clean
+	rm -f $(NAME_CLIENT) $(NAME_SERVER) $(NAME_CLIENT_BONUS) $(NAME_SERVER_BONUS)
+	$(MAKE) -C $(LIBFT_PATH) fclean
+
+re: fclean all
+
+.PHONY: all clean fclean re

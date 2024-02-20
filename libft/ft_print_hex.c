@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_print_ptr.c                                     :+:      :+:    :+:   */
+/*   ft_print_hex.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 14:28:19 by nclassea          #+#    #+#             */
-/*   Updated: 2023/11/22 18:56:47 by nclassea         ###   ########.fr       */
+/*   Created: 2023/11/21 15:24:56 by nclassea          #+#    #+#             */
+/*   Updated: 2024/01/24 14:00:36 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ft_printf.h"
+#include "libft.h"
 
-static unsigned int	ft_ptr_size(unsigned long long n)
+static unsigned int	ft_hex_size(unsigned int n)
 {
 	unsigned int	len;
 
@@ -25,11 +25,11 @@ static unsigned int	ft_ptr_size(unsigned long long n)
 	return (len);
 }
 
-static void	ft_print_adress(unsigned long long n, char *base)
+static void	ft_putnbr_hex(unsigned int n, const char *base)
 {
 	if (n >= 16)
 	{
-		ft_print_adress((n / 16), base);
+		ft_putnbr_hex((n / 16), base);
 		ft_putchar_fd(base[n % 16], 1);
 	}
 	else
@@ -38,20 +38,23 @@ static void	ft_print_adress(unsigned long long n, char *base)
 	}
 }
 
-int	ft_printptr(unsigned long long n)
+int	ft_printhex(unsigned int n, char format)
 {
 	unsigned int	len;
-	char			*base;
+	char			*lower_base;
+	char			*upper_base;
 
-	base = "0123456789abcdef";
+	lower_base = "0123456789abcdef";
+	upper_base = "0123456789ABCDEF";
 	if (n == 0)
 	{
-		ft_putstr_fd("(nil)", 1);
-		return (5);
+		write(1, "0", 1);
+		return (1);
 	}
-	len = ft_ptr_size(n);
-	write(1, "0x", 2);
-	ft_print_adress(n, base);
-	len += 2;
+	len = ft_hex_size(n);
+	if (format == 'x')
+		ft_putnbr_hex(n, lower_base);
+	else
+		ft_putnbr_hex(n, upper_base);
 	return (len);
 }

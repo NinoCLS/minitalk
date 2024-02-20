@@ -3,17 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nino <nino@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: nclassea <nclassea@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 13:07:05 by nino              #+#    #+#             */
-/*   Updated: 2024/01/08 13:12:26 by nino             ###   ########.fr       */
+/*   Updated: 2024/02/20 18:14:34 by nclassea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINITALK_H
 # define MINITALK_H
 
-# include "../ft_printf/include/ft_printf.h"
+# include "../libft/libft.h"
 # include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/types.h>
+# include <unistd.h>
 
 #endif
